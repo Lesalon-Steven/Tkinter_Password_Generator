@@ -33,14 +33,30 @@ def generate_password():
     pass_field.insert(0, pass_word)
 
 
+# ---------------------------- FIND PASSWORD ------------------------------- #
+def find_password():
+    search_key = web_field.get()
+    try:
+        with open("data.json", "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No data file found")
+    else:
+        if search_key in data:
+            email = data[search_key]["email"]
+            passw = data[search_key]["password"]
+            messagebox.showinfo(title="Website", message=f"Email: {email}\n Password: {passw}")
+        else:
+            messagebox.showinfo(title="Error", message="No match found")
 
+# pass
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     site = web_field.get()
     user = mail_field.get()
     passk = pass_field.get()
-    new_data = {site:{
+    new_data = {site: {
         "email": user,
         "password": passk
     }}
@@ -79,9 +95,12 @@ canvas.grid(row=0, column=1)
 
 website = Label(text="Website:")
 website.grid(row=1, column=0)
-web_field = Entry(width=35)
+web_field = Entry(width=17)
 web_field.focus()
-web_field.grid(row=1, column=1, columnspan=2)
+web_field.grid(row=1, column=1)
+
+search = Button(text="Search", width=10, command=find_password)
+search.grid(row=1, column=2)
 
 email = Label(text="Email/Username:")
 email.grid(row=2, column=0)
