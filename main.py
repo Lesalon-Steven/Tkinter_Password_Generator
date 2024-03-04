@@ -1,8 +1,36 @@
 from tkinter import *
 from tkinter import messagebox
+import random
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+# Password Generator Project
+
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v',
+               'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+               'R',
+               'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    a = [random.choice(letters) for _ in range(nr_letters)]
+    b = [random.choice(symbols) for _ in range(nr_symbols)]
+    c = [random.choice(numbers) for _ in range(nr_numbers)]
+
+    password_list = a + b + c
+    random.shuffle(password_list)
+
+    pass_word = "".join(password_list)
+    pass_field.insert(0, pass_word)
+
+
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
@@ -12,7 +40,8 @@ def save():
     if len(site) == 0 or len(passk) == 0:
         messagebox.showinfo(title="Error", message="Please don't leave any fields empty")
     else:
-        is_ok = messagebox.askokcancel(title=site, message=f"These are the details entered: \nEmail : {user}\n Password: {passk} \nIs it okay to save?")
+        is_ok = messagebox.askokcancel(title=site,
+                                       message=f"These are the details entered: \nEmail : {user}\n Password: {passk} \nIs it okay to save?")
 
         if is_ok:
             user_data = f"{site}, {user}, {passk}"
@@ -20,7 +49,7 @@ def save():
             f.write(f'{user_data}\n')
             f.close()
 
-            web_field.delete(0,"end")
+            web_field.delete(0, "end")
             mail_field.delete(0, "end")
             pass_field.delete(0, "end")
 
@@ -52,7 +81,7 @@ password.grid(row=3, column=0)
 pass_field = Entry(width=18)
 pass_field.grid(row=3, column=1)
 
-generate = Button(text="Generate Password")
+generate = Button(text="Generate Password", command=generate_password)
 generate.grid(row=3, column=2)
 
 add = Button(text="add", width=33, command=save)
