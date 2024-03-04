@@ -51,15 +51,20 @@ def save():
                                        message=f"These are the details entered: \nEmail : {user}\n Password: {passk} \nIs it okay to save?")
 
         if is_ok:
-            with open("data.json", "r") as data_file:
-                data = json.load(data_file)
+            try:
+                with open("data.json", "r") as data_file:
+                    data = json.load(data_file)
+            except FileNotFoundError:
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)
+            else:
                 data.update(new_data)
-            with open("data.json", "w") as data_file:
-                json.dump(data, data_file, indent=4)
-
-            web_field.delete(0, "end")
-            mail_field.delete(0, "end")
-            pass_field.delete(0, "end")
+                with open("data.json", "w") as data_file:
+                    json.dump(data, data_file, indent=4)
+            finally:
+                web_field.delete(0, "end")
+                mail_field.delete(0, "end")
+                pass_field.delete(0, "end")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
